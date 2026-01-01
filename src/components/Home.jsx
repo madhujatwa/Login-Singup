@@ -5,18 +5,26 @@ function Home() {
   const [showSingUp, setSingUp] = useState(false);
 
  // Backend URL
-const BACKEND_URL = "http://localhost:8080/api/auth";
+// const BACKEND_URL = "http://localhost:8080/api/auth";
 
 // Login handler
+
 const handleLogin = (e) => {
   e.preventDefault();
+
 
   const user = {
     email: document.getElementById("loginEmail").value,
     password: document.getElementById("loginPassword").value
   };
 
-  fetch(`${BACKEND_URL}/login`, {
+
+  fetch(
+    
+   `${import.meta.env.VITE_API_URL}/login`,
+
+    {
+      
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
@@ -51,7 +59,7 @@ const handleSignup = (e) => {
 
   };
 
-  fetch(`${BACKEND_URL}/signup`, {   // ✅ FIXED
+  fetch ( `${import.meta.env.VITE_API_URL}/signup`, {   // ✅ FIXED
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
