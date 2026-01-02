@@ -4,8 +4,8 @@ function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSingUp, setSingUp] = useState(false);
 
- // Backend URL
-// const BACKEND_URL = "http://localhost:8080/api/auth";
+//  Backend URL
+const BACKEND_URL = "http://localhost:8080/api/auth";
 
 // Login handler
 
@@ -21,7 +21,9 @@ const handleLogin = (e) => {
 
   fetch(
     
-   `${import.meta.env.VITE_API_URL}/login`,
+  //  `${import.meta.env.VITE_API_URL}/login`,
+     `${BACKEND_URL}/login`,
+
 
     {
       
@@ -59,7 +61,12 @@ const handleSignup = (e) => {
 
   };
 
-  fetch ( `${import.meta.env.VITE_API_URL}/signup`, {   // ✅ FIXED
+  // fetch ( `${import.meta.env.VITE_API_URL}/signup`,
+      fetch ( `${BACKEND_URL}/signup`,
+
+
+    
+    {   // ✅ FIXED
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
@@ -80,7 +87,7 @@ const handleSignup = (e) => {
       document.getElementById("signupName").value = "";
       document.getElementById("signupEmail").value = "";
       document.getElementById("signupPassword").value = "";
-      document.getElementById("signupConfirmPassword").value = "";
+      document.getElementById("signupconfirmPassword").value = "";
     })
     .catch(error => {
      
@@ -186,7 +193,7 @@ const handleSignup = (e) => {
             <div className='mb-4'>
               <label className='block mb-1 font-medium'>Confirm Password</label>
               <input
-                id="signupConfirmPassword"
+                id="signupconfirmPassword"
                 type="password"
                 placeholder='Enter Confirm password'
                 className='w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-600'
