@@ -4,29 +4,22 @@ function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSingUp, setSingUp] = useState(false);
 
-//  Backend URL
-const BACKEND_URL = "http://localhost:8080/api/auth";
+  //  Backend URL
+  // const BACKEND_URL = "http://localhost:8080/api/auth";
+  const BACKEND_URL = import.meta.env.VITE_API_URL;
 
-// Login handler
 
-const handleLogin = (e) => {
+  // Login handler
+
+ const handleLogin = (e) => {
   e.preventDefault();
-
 
   const user = {
     email: document.getElementById("loginEmail").value,
     password: document.getElementById("loginPassword").value
   };
 
-
-  fetch(
-    
-  //  `${import.meta.env.VITE_API_URL}/login`,
-     `${BACKEND_URL}/login`,
-
-
-    {
-      
+  fetch(`${BACKEND_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
@@ -36,64 +29,61 @@ const handleLogin = (e) => {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-      return response.json();
+      return response.text(); // ✅ ONLY FIX
     })
     .then(data => {
       console.log(data);
-      alert("Login Successful!");
+      alert(data); // "Login successful"
       setShowLogin(false);
     })
     .catch(error => {
-      console.error(error);
-      alert(error.message || "Login Failed!");
+      alert(error.message);
     });
 };
 
-// Signup handler
-const handleSignup = (e) => {
-  e.preventDefault();
 
-  const user = {
-    fullName: document.getElementById("signupName").value,
-    email: document.getElementById("signupEmail").value,
-    password: document.getElementById("signupPassword").value,
-    confirmPassword: document.getElementById("signupConfirmPassword").value
+  // Signup handler
+  const handleSignup = (e) => {
+    e.preventDefault();
 
+    const user = {
+      fullName: document.getElementById("signupName").value,
+      email: document.getElementById("signupEmail").value,
+      password: document.getElementById("signupPassword").value,
+      confirmPassword: document.getElementById("signupconfirmPassword").value
+
+    };
+
+    // fetch ( `${import.meta.env.VITE_API_URL}/signup`,
+    fetch(`${BACKEND_URL}/signup`,
+      {   // ✅ FIXED
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+      })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        alert("Signup Successful!");
+        setSingUp(false);
+
+        // Clear form
+        document.getElementById("signupName").value = "";
+        document.getElementById("signupEmail").value = "";
+        document.getElementById("signupPassword").value = "";
+        document.getElementById("signupconfirmPassword").value = "";
+      })
+      .catch(error => {
+
+        alert(error.message);
+      });
   };
-
-  // fetch ( `${import.meta.env.VITE_API_URL}/signup`,
-      fetch ( `${BACKEND_URL}/signup`,
-
-
-    
-    {   // ✅ FIXED
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      alert("Signup Successful!");
-      setShowSingUp(false);
-
-      // Clear form
-      document.getElementById("signupName").value = "";
-      document.getElementById("signupEmail").value = "";
-      document.getElementById("signupPassword").value = "";
-      document.getElementById("signupconfirmPassword").value = "";
-    })
-    .catch(error => {
-     
-      alert(error.message );
-    });
-};
 
 
   return (
