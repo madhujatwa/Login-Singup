@@ -29,7 +29,7 @@ function Home() {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-      return response.text(); // ✅ ONLY FIX
+      return response.json(); // ✅ ONLY FIX
     })
     .then(data => {
       console.log(data);
